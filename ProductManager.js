@@ -1,18 +1,10 @@
-//-La ruta en la que se guardan las archivos poasee un componenete variable para generar rutas distintas para cada instancia del objeto
-//-El método "addProduct" recibe un objeto, el cual debe tener el formato establecido. No recibe las propiedades por separado
-//-El método "updateProduct" recibe como parámetro la key de la propiedad a modificar y el nuevo valor. Se deberá llamar al método cada vez que se quiera cambiar una propiedad.
-//-El método "deleteProduct" elimina el archivo .json generado si al eliminar el producto ya no queda ninguno en el arreglo.
-
 const fs = require("fs");
 
 class ProductManager {
   constructor() {
-    if (ProductManager.contador) {
-      ProductManager.contador++;
-    } else {
-      ProductManager.contador = 1;
-    }
-    this.path = `./data/productos-${ProductManager.contador}`;
+    this.path = `./productos.json`;
+    if (!fs.existsSync(this.path)){
+    this.#writeFile([])}
   }
   // Agregado de productos - recive un objeto con el formato especificado.
   addProduct(productObj) {
@@ -89,15 +81,28 @@ class ProductManager {
   }
   //Funcion para leer el archivo
   #reedFile() {
-    if (fs.existsSync(this.path)) {
       const productFile = fs.readFileSync(this.path, "utf-8");
       return JSON.parse(productFile);
-    } else {
-      return [];
-    }
   }
   //Funcion para grabar el archivo
   #writeFile(product) {
     fs.writeFileSync(this.path, JSON.stringify(product));
   }
 }
+/* let prueba = new ProductManager(); */
+/* prueba.getProducts();
+prueba.addProduct({
+  title: "producto prueba",
+  description: "Este es un producto prueba",
+  price: 200,
+  thumbnail:"Sin imagen",
+  code: "abc3",
+  stock: 25,
+});
+prueba.getProducts();
+prueba.getProductById(1); */
+/* prueba.updateProduct(1,"price", 400);
+prueba.getProductById(1); */
+/* prueba.deleteProduct(3);
+prueba.getProductById(3); */
+/* prueba.getProducts(); */
