@@ -67,7 +67,7 @@ class ProductManager {
       ? console.log(`No existe un producto con el id: ${productId}`)
       : products.splice(i, 1);
     if (products.length === 0) {
-      fs.unlinkSync(this.path);
+      this.#writeFile([]);
     } else {
       this.#writeFile(products);
     }
@@ -89,8 +89,8 @@ class ProductManager {
     fs.writeFileSync(this.path, JSON.stringify(product));
   }
 }
-/* let prueba = new ProductManager(); */
-/* prueba.getProducts();
+let prueba = new ProductManager();
+prueba.getProducts();
 prueba.addProduct({
   title: "producto prueba",
   description: "Este es un producto prueba",
@@ -100,9 +100,9 @@ prueba.addProduct({
   stock: 25,
 });
 prueba.getProducts();
-prueba.getProductById(1); */
+/* prueba.getProductById(1); */
 /* prueba.updateProduct(1,"price", 400);
 prueba.getProductById(1); */
-/* prueba.deleteProduct(3);
-prueba.getProductById(3); */
-/* prueba.getProducts(); */
+prueba.deleteProduct(1);
+/* prueba.getProductById(3); */
+prueba.getProducts();
