@@ -1,25 +1,21 @@
 import express from "express";
-import { ProductManager } from "./ProductManager.js";
+import productsRouter from './routes/products.router.js';
+import cartRouter from './routes/cart.router.js';
+
 
 const app = express(); //Creación del servidor con Express
 const PORT = 8080; //Se define el puerto al que se estará escuchando
-const productManager = new ProductManager("productos.json"); //Creación de una instancia de la clase ProductManager
+
+
+app.use(express.json());
+app.use(express.urlencoded({extended:true}));
+
+app.use("/products",productsRouter);
+app.use("/cart",cartRouter);
 
 //Idicación del puerto a escuchar, con mensaje por consola
 app.listen(PORT, () => {
   console.log(`Escuchando al puerto ${PORT}`);
 });
 
-//Dirección desde la que pueden obtenerse todos los productos o una cantidad limitada si se pasa la query limit
-app.get("/products", async (req, res) => {
-  const { limit } = req.query;
-  const products = await productManager.getProducts(limit || "all");
-  res.json({ products });
-});
 
-//Dirección con parametro variable para obtener solo un producto determinado por si id
-app.get("/products/:pid", async (req, res) => {
-  const { pid } = req.params;
-  const product = await productManager.getProductById(pid);
-  res.json({ product });
-});
